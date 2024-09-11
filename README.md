@@ -1,7 +1,3 @@
-Here's a sample README text for your Minesweeper game:
-
----
-
 # Minesweeper Game
 
 Welcome to the Minesweeper game! This classic puzzle game challenges your skills in deduction and strategy. Navigate through the grid and uncover safe cells while avoiding hidden mines. Choose your difficulty level and test your abilities!
