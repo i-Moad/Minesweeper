@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Minesweeper !</title>
+</head>
+<body>
+    <div class="gamePage">
+
+        <div class="statistic">
+            <div class="allStatistic">
+                <h3>Statistics:</h3>
+                <div class="EasyMode">
+                    <h4>Easy Mode</h4>
+                    <div class="numberOfVictory">
+                        <h6>Number Of Victory: <span id="easyNumberOfVictory">0</span></h6>
+                    </div>
+                    <div class="bestTime">
+                        <h6>Best Time: <span id="easyBestTime">--:--:---</span></h6>
+                    </div>
+                </div>
+                <div class="NormalMode">
+                    <h4>Normal Mode</h4>
+                    <div class="numberOfVictory">
+                        <h6>Number Of Victory: <span id="normalNumberOfVictory">0</span></h6>
+                    </div>
+                    <div class="bestTime">
+                        <h6>Best Time: <span id="normalBestTime">--:--:---</span></h6>
+                    </div>
+                </div>
+                <div class="HardMode">
+                    <h4>Hard Mode</h4>
+                    <div class="numberOfVictory">
+                        <h6>Number Of Victory: <span id="hardNumberOfVictory">0</span></h6>
+                    </div>
+                    <div class="bestTime">
+                        <h6>Best Time: <span id="hardBestTime">--:--:---</span></h6>
+                    </div>
+                </div>
+                <div class="ExpertMode">
+                    <h4>Expert Mode</h4>
+                    <div class="numberOfVictory">
+                        <h6>Number Of Victory: <span id="expertNumberOfVictory">0</span></h6>
+                    </div>
+                    <div class="bestTime">
+                        <h6>Best Time: <span id="expertBestTime">--:--:---</span></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="tutorial">
+                <img src="./assets/flag.png" alt="flag" draggable="false" oncontextmenu="return false;">
+                <span> : RIGHT CLICK</span>
+            </div>
+        </div>
+
+        <div id="restart" class="restart">
+            <img src="./assets/refresh.png" alt="restart" draggable="false" oncontextmenu="return false;">
+        </div>
+        <div id="container" class="container easy">
+        </div>
+
+        <div class="settings">
+            <h3>Choose Difficulty:</h3>
+            <div id="difficulty" class="difficulty">
+                <button id="BtnEasy" class="Btn BtnEasy" onclick="applyDifficulty('easy')">Easy</button>
+                <button id="BtnNormal" class="Btn BtnNormal" onclick="applyDifficulty('normal')">Normal</button>
+                <button id="BtnHard" class="Btn BtnHard" onclick="applyDifficulty('hard')">Hard</button>
+                <button id="BtnExpert" class="Btn BtnExpert" onclick="applyDifficulty('expert')">Expert</button>
+            </div>
+            <div id="timer" class="timer">
+                <span id="currentTime">00:00:000</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
