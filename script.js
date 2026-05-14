@@ -20,6 +20,8 @@ const flagImageSrc = "./assets/flag.png";
 const questionMarkSrc = "./assets/questionMark.png";
 const bombs = [];
 
+let pressTimer;
+let longPressTriggered = false;
 let gameEnd = false;
 let gameDifficulty = "easy";
 let progress = 0;
@@ -96,7 +98,9 @@ function prepareGameBoard() {
 
 
 function applyDifficulty(difficulty) {
+
     restart();
+
     Array.from(difficultyBtns.children).forEach(btn => {
         btn.classList.remove('selected');
     });
@@ -104,86 +108,68 @@ function applyDifficulty(difficulty) {
     if (difficulty == "easy") {
         gameDifficulty = "easy";
         statistics.lastDificculty = "easy";
+
         BtnEasy.classList.add('selected');
+
         maxProgress = 62;
         maxBombs = 10;
+
         maxAxis.xAxis = 8;
         maxAxis.yAxis = 9;
-        container.innerHTML = '';
-        removeClassAtPosition(container, 1);
-        container.classList.add('easy');
-
-        for (let i = 0; i < maxAxis.yAxis; i++) {
-            for (let j = 0; j < maxAxis.xAxis; j++) {
-                container.innerHTML += `<div class="gridHide X-${j} Y-${i} cell"></div>`;
-            }
-        }
-
-        saveData();
     }
 
     if (difficulty == "normal") {
         gameDifficulty = "normal";
         statistics.lastDificculty = "normal";
+
         BtnNormal.classList.add('selected');
+
         maxProgress = 100;
         maxBombs = 20;
+
         maxAxis.xAxis = 10;
         maxAxis.yAxis = 12;
-        container.innerHTML = '';
-        removeClassAtPosition(container, 1);
-        container.classList.add('normal');
-
-        for (let i = 0; i < maxAxis.yAxis; i++) {
-            for (let j = 0; j < maxAxis.xAxis; j++) {
-                container.innerHTML += `<div class="gridHide X-${j} Y-${i} cell"></div>`;
-            }
-        }
-
-        saveData();
     }
 
     if (difficulty == "hard") {
         gameDifficulty = "hard";
         statistics.lastDificculty = "hard";
+
         BtnHard.classList.add('selected');
+
         maxProgress = 138;
         maxBombs = 30;
+
         maxAxis.xAxis = 12;
         maxAxis.yAxis = 14;
-        container.innerHTML = '';
-        removeClassAtPosition(container, 1);
-        container.classList.add('hard');
-
-        for (let i = 0; i < maxAxis.yAxis; i++) {
-            for (let j = 0; j < maxAxis.xAxis; j++) {
-                container.innerHTML += `<div class="gridHide X-${j} Y-${i} cell"></div>`;
-            }
-        }
-
-        saveData();
     }
 
     if (difficulty == "expert") {
         gameDifficulty = "expert";
         statistics.lastDificculty = "expert";
+
         BtnExpert.classList.add('selected');
+
         maxProgress = 155;
         maxBombs = 40;
+
         maxAxis.xAxis = 13;
         maxAxis.yAxis = 15;
-        container.innerHTML = '';
-        removeClassAtPosition(container, 1);
-        container.classList.add('expert');
-
-        for (let i = 0; i < maxAxis.yAxis; i++) {
-            for (let j = 0; j < maxAxis.xAxis; j++) {
-                container.innerHTML += `<div class="gridHide X-${j} Y-${i} cell"></div>`;
-            }
-        }
-
-        saveData();
     }
+
+    let html = "";
+
+    for (let i = 0; i < maxAxis.yAxis; i++) {
+        for (let j = 0; j < maxAxis.xAxis; j++) {
+            html += `<div class="gridHide X-${j} Y-${i} cell"></div>`;
+        }
+    }
+
+    container.innerHTML = html;
+
+    container.style.gridTemplateColumns = `repeat(${maxAxis.xAxis}, 1fr)`;
+
+    saveData();
 }
 
 
@@ -463,29 +449,32 @@ function showBombs() {
 
 
 function showFlag(target) {
-    const FlagImage = document.createElement('img');
-    FlagImage.src = flagImageSrc;
-    FlagImage.alt = "flag";
-    FlagImage.classList.add('flag');
-    FlagImage.draggable = false;
-    FlagImage.oncontextmenu = function() {
-        return false;
-    };
-    target.appendChild(FlagImage);
+    target.innerHTML = "";
+
+    const flagImage = document.createElement('img');
+
+    flagImage.src = flagImageSrc;
+    flagImage.alt = "flag";
+    flagImage.classList.add('flag');
+
+    flagImage.draggable = false;
+
+    target.appendChild(flagImage);
 }
 
 
 function showQuestionMark(target) {
-    const QuestionMarkImage = document.createElement('img');
-    QuestionMarkImage.src = questionMarkSrc;
-    QuestionMarkImage.alt = "questionMark";
-    QuestionMarkImage.classList.add('questionMark');
-    QuestionMarkImage.draggable = false;
-    QuestionMarkImage.oncontextmenu = function() {
-        return false;
-    };
-    target.parentNode.appendChild(QuestionMarkImage);
-    target.remove();
+    target.innerHTML = "";
+
+    const questionMarkImage = document.createElement('img');
+
+    questionMarkImage.src = questionMarkSrc;
+    questionMarkImage.alt = "questionMark";
+    questionMarkImage.classList.add('questionMark');
+
+    questionMarkImage.draggable = false;
+
+    target.appendChild(questionMarkImage);
 }
 
 
@@ -535,26 +524,88 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // Right click role
-container.oncontextmenu = function(e) {
+// container.oncontextmenu = function(e) {
+//     e.preventDefault();
+//     const gridTarget = e.target;
+
+//     if (gridTarget.outerHTML == `<img src="./assets/questionMark.png" alt="questionMark" class="questionMark" draggable="false">`) {
+//         gridTarget.remove();
+//         return;
+//     }
+    
+//     if (gridTarget.outerHTML == `<img src="./assets/flag.png" alt="flag" class="flag" draggable="false">`) {
+//         showQuestionMark(gridTarget);
+//         return;
+//     }
+
+//     if (gridTarget.classList.contains('gridHide')) {
+//         showFlag(gridTarget);
+//     }
+    
+//     return;
+// };
+
+function handleFlagging(target) {
+
+    if (gameEnd) return;
+
+    const cell = target.closest(".cell");
+
+    if (!cell || !cell.classList.contains("gridHide")) {
+        return;
+    }
+
+    const hasFlag = cell.querySelector(".flag");
+    const hasQuestion = cell.querySelector(".questionMark");
+
+    if (hasQuestion) {
+        cell.innerHTML = "";
+        return;
+    }
+
+    if (hasFlag) {
+        showQuestionMark(cell);
+        return;
+    }
+
+    showFlag(cell);
+}
+
+function updateTutorialText() {
+    const tutorialText = document.querySelector(".tutorial span");
+
+    if (window.innerWidth <= 768) {
+        tutorialText.innerText = ": LONG PRESS";
+    } else {
+        tutorialText.innerText = ": RIGHT CLICK";
+    }
+}
+
+container.addEventListener("contextmenu", (e) => {
     e.preventDefault();
-    const gridTarget = e.target;
 
-    if (gridTarget.outerHTML == `<img src="./assets/questionMark.png" alt="questionMark" class="questionMark" draggable="false">`) {
-        gridTarget.remove();
-        return;
-    }
-    
-    if (gridTarget.outerHTML == `<img src="./assets/flag.png" alt="flag" class="flag" draggable="false">`) {
-        showQuestionMark(gridTarget);
-        return;
-    }
+    handleFlagging(e.target);
+});
 
-    if (gridTarget.classList.contains('gridHide')) {
-        showFlag(gridTarget);
-    }
-    
-    return;
-};
+container.addEventListener("touchstart", (e) => {
+
+    const target = e.target;
+
+    longPressTriggered = false;
+
+    pressTimer = setTimeout(() => {
+
+        longPressTriggered = true;
+
+        handleFlagging(target);
+
+    }, 500);
+
+}, { passive: false });
+
+container.addEventListener("touchend", () => {
+    clearTimeout(pressTimer);
+});
 
 
 document.addEventListener('keypress', (e) => {
@@ -565,13 +616,22 @@ document.addEventListener('keypress', (e) => {
 
 
 container.addEventListener('click', (e) => {
+    if (longPressTriggered) {
+        longPressTriggered = false;
+        return;
+    }
+
     if (gameEnd) {
         return;
     }
 
     const gridTarget = e.target;
 
-    if (!gridTarget.classList.contains('gridHide')) {
+    if (
+        !gridTarget.classList.contains('gridHide') ||
+        gridTarget.classList.contains('flag') ||
+        gridTarget.classList.contains('questionMark')
+    ) {
         return;
     }
 
@@ -634,3 +694,6 @@ container.addEventListener('click', (e) => {
 restartBtn.addEventListener("click", () => {
     restart();
 });
+
+window.addEventListener("resize", updateTutorialText);
+updateTutorialText();

@@ -1,51 +1,53 @@
-# Minesweeper Game
+# Minesweeper
 
-Welcome to the Minesweeper game! This classic puzzle game challenges your skills in deduction and strategy. Navigate through the grid and uncover safe cells while avoiding hidden mines. Choose your difficulty level and test your abilities!
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
+A responsive browser-based Minesweeper game built with vanilla JavaScript, HTML, and CSS.
 
 ## Features
 
-- **Four Difficulty Levels**: 
-  - **Easy**: A smaller grid with fewer mines.
-  - **Normal**: A standard grid with a moderate number of mines.
-  - **Hard**: A larger grid with a higher density of mines.
-  - **Expert**: The ultimate challenge with a vast grid and numerous mines.
+- Multiple difficulty modes
+- Recursive flood-fill reveal system
+- Flag and question mark mechanics
+- Best time tracking
+- Local storage statistics
+- First-click safe generation
+- Responsive layout
+- Mobile-friendly controls
 
-- **Intuitive Interface**: Easy-to-use and interactive gameplay.
-- **Mine Counting**: Displays the number of adjacent mines for each cell.
-- **Flagging**: Mark cells that you suspect contain mines.
+## Technologies
 
-## Installation
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/i-Moad/Minesweeper.git
-   ```
+## How It Works
 
-2. **Navigate to the Project Directory:**
-   ```bash
-   cd Minesweeper
-   ```
+The game dynamically generates a board based on the selected difficulty.
 
-3. **Open the Game:**
-   Open `index.html` in your web browser to start playing.
+Bombs are generated after the first click to guarantee a safe starting position.
 
-## Usage
+The reveal system uses recursive area expansion to uncover nearby empty cells.
 
-1. **Select Difficulty**: Choose your desired difficulty level from the menu.
-2. **Play the Game**: Click on cells to reveal them. Use flags to mark suspected mines.
-3. **Win or Lose**: Clear all safe cells to win, or trigger a mine to lose.
+Statistics and best times are stored locally using localStorage.
 
-## License
+## Controls
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/i-Moad/Minesweeper/blob/master/LICENSE.txt) file for details.
+### Desktop
+- Left click → Reveal cell
+- Right click → Place flag/question mark
 
----
+### Mobile
+- Tap → Reveal cell
+- Long press → Place flag
 
-Feel free to adjust any sections to better fit your specific project details!
+## Difficulties
+
+| Difficulty | Grid Size | Bombs |
+|------------|-----------|-------|
+| Easy       | 8x9       | 10    |
+| Normal     | 10x12     | 20    |
+| Hard       | 12x14     | 30    |
+| Expert     | 13x15     | 40    |
+
+## Author
+
+Made by Moad AIT IDIR

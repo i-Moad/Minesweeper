@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
-    cursor: default ;
+    cursor: inherit;
 }
 
 body {
@@ -11,6 +11,7 @@ body {
     -moz-user-select: none;    /* Firefox */
     -ms-user-select: none;     /* Internet Explorer/Edge */
     user-select: none;         /* Standard syntax */
+    overflow-x: hidden;
 }
 
 .gamePage{
@@ -25,16 +26,18 @@ body {
 }
 
 .container{
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
     display: grid;
-    gap: .2rem; //gap
+    gap: .15rem;
+
     padding: .2rem;
     border-radius: .2rem;
+
     background-color: #2e2e2e;
-    overflow: hidden;
+
+    width: fit-content;
+    max-width: 95vw;
+
+    overflow: auto;
 }
 
 .gridHide{
@@ -60,70 +63,6 @@ body {
 
 .selected{
     border: 2px solid #fcfcfc !important;
-}
-
-.easy{
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-}
-
-.easy > .gridHide, .easy > .gridShow{
-    display: inline-block;
-    width: 4rem;
-    height: 4rem;
-}
-
-.container.easy{
-    width: 33.6rem;
-    height: 37.8rem;
-}
-
-.normal{
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(12, 1fr);
-}
-
-.normal > .gridHide, .normal > .gridShow{
-    display: inline-block;
-    width: 3.2rem;
-    height: 3rem;
-}
-
-.container.normal{
-    width: 34rem;
-    height: 38.4rem;
-}
-
-.hard{
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(14, 1fr);
-}
-
-.hard > .gridHide, .hard > .gridShow{
-    display: inline-block;
-    width: 2.66rem;
-    height: 2.57rem;
-}
-
-.container.hard{
-    width: 34.4rem;
-    height: 38.8rem;
-}
-
-.expert{
-    grid-template-columns: repeat(13, 1fr);
-    grid-template-rows: repeat(15, 1fr);
-}
-
-.expert > .gridHide, .expert > .gridShow{
-    display: inline-block;
-    width: 2.46rem;
-    height: 2.4rem;
-}
-
-.container.expert{
-    width: 34.6rem;
-    height: 39rem;
 }
 
 .statistic{
@@ -250,12 +189,18 @@ body {
     transform: scaleX(-1);
 }
 
-.bomb, .flag, .questionMark{
-    width: 100%;
+.bomb,
+.flag,
+.questionMark{
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    pointer-events: none;
 }
 
 .N{
-    font-size: 1.5rem;
+    font-size: clamp(.7rem, 2vw, 1.3rem);
+
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -300,4 +245,77 @@ body {
 .win{
     background-color: #397959;
     border: none;
+}
+
+.cell{
+    width: min(8vw, 42px);
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media screen and (max-width: 768px){
+    .gamePage{
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 1rem;
+
+        padding: 1rem;
+
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .statistic,
+    .settings{
+        width: 100%;
+        max-width: 500px;
+
+        padding: 1rem;
+
+        font-size: 1rem;
+    }
+
+    .difficulty{
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        gap: .5rem;
+    }
+
+    .Btn{
+        width: 45%;
+        height: 3rem;
+
+        font-size: 1rem;
+    }
+
+    .timer{
+        font-size: 1.5rem;
+    }
+
+    .restart img{
+        width: 3rem;
+        margin-top: 0;
+    }
+
+    .tutorial img{
+        width: 3rem;
+    }
+
+    .tutorial span{
+        font-size: 1rem;
+    }
+
+    .N{
+        font-size: .8rem;
+    }
 }
